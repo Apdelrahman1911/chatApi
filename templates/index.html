@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+</head>
+<body>
+
+    <h1>Chatbot</h1>
+
+    <form id="chatForm">
+        <label for="userInput">Enter your text:</label>
+        <input type="text" id="userInput" name="userInput" required>
+        <button type="button" onclick="generateResponse()">Generate Response</button>
+    </form>
+
+    <div id="responseArea"></div>
+
+    <script>
+        function generateResponse() {
+            var userInput = document.getElementById('userInput').value;
+
+            // Send user input to Flask server
+            fetch('/generate_response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'text': userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the generated response
+                document.getElementById('responseArea').innerText = data.response;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+</body>
+</html>
